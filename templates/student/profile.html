@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h3 class="mb-4 text-primary font-weight-bold">My Profile</h3>
+        <div class="card p-4 shadow-sm border-top border-primary border-4">
+            <form method="POST" action="" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="full_name" class="form-label text-secondary fw-semibold">Full Name</label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" value="{{ profile.full_name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="roll_number" class="form-label text-secondary fw-semibold">Roll Number</label>
+                        <input type="text" class="form-control" id="roll_number" name="roll_number" value="{{ profile.roll_number or '' }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="contact" class="form-label text-secondary fw-semibold">Contact Number</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="{{ profile.contact or '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="branch" class="form-label text-secondary fw-semibold">Branch/Degree</label>
+                        <input type="text" class="form-control" id="branch" name="branch" value="{{ profile.branch or '' }}" placeholder="e.g. B.Tech Computer Science">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cgpa" class="form-label text-secondary fw-semibold">CGPA</label>
+                        <input type="number" step="0.01" class="form-control" id="cgpa" name="cgpa" value="{{ profile.cgpa or '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="graduation_year" class="form-label text-secondary fw-semibold">Graduation Year</label>
+                        <input type="number" class="form-control" id="graduation_year" name="graduation_year" value="{{ profile.graduation_year or '' }}">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="resume" class="form-label text-secondary fw-semibold">Upload Resume (PDF only)</label>
+                    <input type="file" class="form-control" id="resume" name="resume" accept=".pdf">
+                    {% if profile.resume_path %}
+                        <small class="form-text text-success d-block mt-1">Current: <a href="{{ url_for('static', filename=profile.resume_path) }}" target="_blank">View Resume</a></small>
+                    {% else %}
+                        <small class="form-text text-muted">Please upload your latest resume.</small>
+                    {% endif %}
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

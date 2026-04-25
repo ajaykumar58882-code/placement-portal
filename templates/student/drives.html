@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Opportunities{% endblock %}
+{% block content %}
+<h3 class="mb-4 text-primary font-weight-bold">Placement Opportunities</h3>
+
+<div class="row">
+    {% for drive in drives %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm transition-hover">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-middle">
+                    <h5 class="card-title text-primary mb-1">{{ drive.job_title }}</h5>
+                    {% if drive.id in applied_drive_ids %}
+                        <span class="badge bg-secondary">Applied</span>
+                    {% endif %}
+                </div>
+                <h6 class="text-muted mb-3">{{ drive.company.company_name }}</h6>
+                
+                <p class="card-text text-truncate" style="max-height: 4.5em;">{{ drive.job_description }}</p>
+                <div class="mb-3 text-secondary" style="font-size: 0.9em;">
+                    <strong>Deadline:</strong> {{ drive.application_deadline.strftime('%Y-%m-%d %H:%M') }}
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                    <!-- Collapse Button for Details -->
+                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ drive.id }}" aria-expanded="false" aria-controls="details-{{ drive.id }}">
+                        View Details
+                    </button>
+
+                    {% if drive.id not in applied_drive_ids %}
+                    <form method="POST" action="{{ url_for('student.apply_drive', drive_id=drive.id) }}">
+                        <button type="submit" class="btn btn-sm btn-primary">Apply Now</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-sm btn-outline-success" disabled>Application Submitted</button>
+                    {% endif %}
+                </div>
+                
+                <div class="collapse mt-3" id="details-{{ drive.id }}">
+                    <div class="bg-light p-3 rounded text-sm">
+                        <strong class="d-block mb-1">Full Description:</strong>
+                        <p style="white-space: pre-wrap;">{{ drive.job_description }}</p>
+                        <strong class="d-block mt-2 mb-1">Eligibility Criteria:</strong>
+                        <p style="white-space: pre-wrap;">{{ drive.eligibility_criteria }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info border-0 shadow-sm text-center py-4">
+            No active placement drives are available at the moment.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

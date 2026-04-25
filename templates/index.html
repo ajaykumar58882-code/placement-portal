@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome | Prestige Placements{% endblock %}
+
+{% block content %}
+<div class="hero-section shadow-sm">
+    <div class="container">
+        <h1 class="hero-title">Empower Your Career Journey</h1>
+        <p class="hero-subtitle">The ultimate platform bridging the gap between top-tier talent and industry-leading companies. Seamlessly manage placements, showcase skills, and discover outstanding job opportunities.</p>
+        
+        {% if not current_user.is_authenticated %}
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('auth.register_student') }}" class="btn btn-primary btn-lg shadow-sm px-4">Join as Student</a>
+                <a href="{{ url_for('auth.register_company') }}" class="btn btn-outline-primary btn-lg bg-white shadow-sm px-4">Partner as Company</a>
+            </div>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg shadow-sm px-4">Go to Dashboard</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-5 pt-4">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <span class="fs-1 text-primary">🎓</span>
+                </div>
+                <h4 class="card-title">For Students</h4>
+                <p class="text-secondary mt-2">Build your profile, upload your resume, and seamlessly apply to multiple drives in one click. Stay updated via your dedicated dashboard.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center p-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <span class="fs-1 text-primary">🏢</span>
+                </div>
+                <h4 class="card-title">For Companies</h4>
+                <p class="text-secondary mt-2">Create custom placement drives, track all applications intuitively, and shortlist or select candidates effortlessly.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center p-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <span class="fs-1 text-primary">⚙️</span>
+                </div>
+                <h4 class="card-title">For Institutes</h4>
+                <p class="text-secondary mt-2">Full control over users and drives. Automate approvals and maintain strict verification constraints simply and efficiently.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

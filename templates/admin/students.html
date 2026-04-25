@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Manage Students{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-primary font-weight-bold">Manage Students</h3>
+    <form class="d-flex" method="GET" action="{{ url_for('admin.students') }}">
+        <input class="form-control me-2" type="search" placeholder="Search students..." name="search" value="{{ request.args.get('search', '') }}">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Roll Number</th>
+                    <th>Branch & Year</th>
+                    <th>CGPA</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td class="fw-semibold">{{ student.full_name }}<br><small class="text-muted">{{ student.contact or 'No contact' }}</small></td>
+                    <td>{{ student.roll_number or 'N/A' }}</td>
+                    <td>{{ student.branch or 'N/A' }} ({{ student.graduation_year or 'N/A' }})</td>
+                    <td>{{ student.cgpa or 'N/A' }}</td>
+                    <td>
+                        {% if student.user.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-danger">Blacklisted</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <form method="POST" action="{{ url_for('admin.toggle_student_status', user_id=student.user_id) }}">
+                                {% if student.user.is_active %}
+                                    <button type="submit" class="btn btn-sm btn-warning">Blacklist</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-sm btn-success">Activate</button>
+                                {% endif %}
+                            </form>
+                            <form method="POST" action="{{ url_for('admin.delete_student', user_id=student.user_id) }}">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to completely delete this student?');">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="text-center py-4">No students found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
